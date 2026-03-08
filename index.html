@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vernit Tayal — Analyst</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #1B3A6B;
+      --accent: #3B82F6;
+      --accent-glow: rgba(59,130,246,0.25);
+
+      --bg: #FFFFFF;
+      --bg2: #F7F8FA;
+      --bg3: #EEF1F5;
+      --text: #111827;
+      --text2: #6B7280;
+      --border: #E5E7EB;
+      --card: #FFFFFF;
+      --nav-bg: rgba(255,255,255,0.92);
+
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'Inter', sans-serif;
+      --radius: 14px;
+      --transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0A0F1E;
+      --bg2: #111827;
+      --bg3: #1F2937;
+      --text: #F9FAFB;
+      --text2: #9CA3AF;
+      --border: #1F2937;
+      --card: #111827;
+      --nav-bg: rgba(10,15,30,0.92);
+      --navy: #60A5FA;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      font-weight: 300;
+      line-height: 1.6;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 5vw;
+      background: var(--nav-bg);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition), border-color var(--transition);
+    }
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      color: var(--navy);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    .nav-right { display: flex; align-items: center; gap: 2rem; }
+    .nav-links { display: flex; gap: 1.8rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 400;
+      color: var(--text2);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+    /* Dark mode toggle */
+    .theme-toggle {
+      width: 48px; height: 26px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      cursor: pointer;
+      position: relative;
+      transition: background var(--transition), border-color var(--transition);
+      flex-shrink: 0;
+    }
+    .theme-toggle::after {
+      content: '';
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+    [data-theme="dark"] .theme-toggle::after { transform: translateX(22px); }
+    .theme-icon { font-size: 0.7rem; position: absolute; top: 50%; transform: translateY(-50%); }
+    .theme-icon.sun { left: 5px; }
+    .theme-icon.moon { right: 5px; }
+
+    /* ── SECTIONS BASE ── */
+    section { padding: 6rem 5vw; }
+    .section-label {
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      color: var(--navy);
+      margin-bottom: 0.8rem;
+      transition: color var(--transition);
+    }
+    .section-divider {
+      width: 36px; height: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+      margin-bottom: 3rem;
+    }
+
+    /* ── HERO ── */
+    #home {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 8rem 5vw 4rem;
+      background: var(--bg2);
+      position: relative; overflow: hidden;
+      transition: background var(--transition);
+    }
+    #home::before {
+      content: '';
+      position: absolute; top: -120px; right: -120px;
+      width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      width: 100%;
+      max-width: 1200px;
+      position: relative; z-index: 1;
+    }
+    .hero-inner { position: relative; z-index: 1; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent);
+      border: 1px solid var(--accent-glow);
+      background: rgba(59,130,246,0.07);
+      padding: 0.35rem 1rem; border-radius: 40px; margin-bottom: 1.8rem;
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #34D399; box-shadow: 0 0 6px #34D399; }
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 5.5vw, 5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+      white-space: nowrap;
+      transition: color var(--transition);
+    }
+    .hero-name span { color: var(--accent); }
+    .hero-role {
+      font-family: var(--sans);
+      font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+      color: var(--text2);
+      font-weight: 400;
+      font-style: normal;
+      letter-spacing: 0.03em;
+      margin-bottom: 1.4rem;
+      transition: color var(--transition);
+    }
+    .hero-role strong { color: var(--accent); font-weight: 600; }
+    .hero-sub {
+      font-size: 0.97rem; color: var(--text2);
+      max-width: 480px; line-height: 1.85;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+      transition: color var(--transition);
+    }
+    .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    /* Hero right — visual panel */
+    .hero-visual {
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .hero-card-stack {
+      position: relative; width: 100%; max-width: 440px;
+    }
+    /* Main analytics window */
+    .hero-img-card {
+      background: #0D1117;
+      border-radius: 16px;
+      border: 1px solid rgba(59,130,246,0.2);
+      box-shadow: 0 28px 70px rgba(0,0,0,0.35);
+      overflow: hidden;
+      font-family: 'Courier New', monospace;
+    }
+    .code-titlebar {
+      background: #161B22; padding: 0.6rem 1rem;
+      display: flex; align-items: center; gap: 0.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot.r { background: #FF5F57; }
+    .dot.y { background: #FFBD2E; }
+    .dot.g { background: #28CA42; }
+    .code-filename { font-size: 0.7rem; color: rgba(255,255,255,0.35); margin-left: 0.5rem; }
+    .code-body { padding: 1rem 1.2rem; }
+    .code-line { display: flex; gap: 0.8rem; margin-bottom: 0.22rem; font-size: 0.72rem; line-height: 1.5; }
+    .ln { color: rgba(255,255,255,0.18); min-width: 14px; text-align: right; user-select: none; }
+    .kw { color: #FF7B72; }   /* keyword - red */
+    .fn { color: #D2A8FF; }   /* function - purple */
+    .st { color: #A5D6FF; }   /* string - blue */
+    .cm { color: #8B949E; }   /* comment - gray */
+    .nm { color: #79C0FF; }   /* number - light blue */
+    .op { color: #E6EDF3; }   /* operator/plain */
+    .vr { color: #FFA657; }   /* variable - orange */
+
+    /* Mini chart */
+    .chart-block {
+      background: #161B22; border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 0.8rem 1.2rem 1rem;
+    }
+    .chart-label { font-size: 0.65rem; color: rgba(255,255,255,0.35); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.7rem; font-family: var(--sans); }
+    .chart-bars { display: flex; align-items: flex-end; gap: 5px; height: 48px; }
+    .bar {
+      flex: 1; border-radius: 3px 3px 0 0;
+      background: rgba(59,130,246,0.5);
+      position: relative; transition: background 0.3s;
+    }
+    .bar:nth-child(3n+1) { background: rgba(59,130,246,0.7); }
+    .bar:nth-child(3n+2) { background: rgba(99,179,237,0.5); }
+    .bar.highlight { background: #3B82F6; box-shadow: 0 0 8px rgba(59,130,246,0.6); }
+    .chart-line-wrap { position: relative; height: 36px; margin-top: 0.5rem; }
+    svg.sparkline { width: 100%; height: 36px; }
+
+    /* Float badge */
+    .hero-float-badge {
+      position: absolute; bottom: -18px; right: 16px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 0.65rem 1rem;
+      display: flex; align-items: center; gap: 0.6rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      transition: background var(--transition), border-color var(--transition);
+    }
+    .float-icon { font-size: 1.1rem; }
+    .float-text { font-size: 0.75rem; font-weight: 600; color: var(--text); line-height: 1.3; transition: color var(--transition); }
+    .float-sub { font-size: 0.63rem; color: var(--text2); font-weight: 400; transition: color var(--transition); }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      padding: 0.75rem 1.6rem; border-radius: 8px;
+      font-family: var(--sans); font-size: 0.88rem; font-weight: 500;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.2s; border: none; letter-spacing: 0.02em;
+    }
+    .btn-primary {
+      background: var(--accent); color: white;
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px var(--accent-glow); filter: brightness(1.1); }
+    .btn-ghost {
+      background: transparent; color: var(--text);
+      border: 1.5px solid var(--border);
+      transition: all 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    /* Scroll indicator */
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; left: 5vw;
+      display: flex; align-items: center; gap: 0.8rem;
+      color: var(--text2); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .scroll-line {
+      width: 40px; height: 1px;
+      background: linear-gradient(to right, var(--accent), transparent);
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--bg); transition: background var(--transition); }
+    .about-grid {
+      display: grid; grid-template-columns: 1.1fr 0.9fr;
+      gap: 5rem; align-items: start; max-width: 1100px;
+    }
+    .about-text p { color: var(--text2); margin-bottom: 1.2rem; font-size: 0.97rem; line-height: 1.85; transition: color var(--transition); }
+    .about-text strong { color: var(--text); font-weight: 500; }
+    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .stat-card {
+      padding: 1.5rem; background: var(--bg2);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      transition: background var(--transition), border-color var(--transition), transform 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+    .stat-num { font-family: var(--serif); font-size: 2.2rem; color: var(--accent); line-height: 1; }
+    .stat-label { font-size: 0.8rem; color: var(--text2); margin-top: 0.3rem; transition: color var(--transition); }
+
+    /* ── SKILLS ── */
+    #skills { background: var(--bg2); transition: background var(--transition); }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.2rem; max-width: 1100px; }
+    .skill-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.6rem;
+      transition: transform 0.2s, box-shadow 0.2s, background var(--transition), border-color var(--transition);
+    }
+    .skill-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.3); }
+    .skill-icon {
+      width: 38px; height: 38px; border-radius: 9px;
+      background: rgba(59,130,246,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; margin-bottom: 1rem;
+    }
+    .skill-card h3 { font-family: var(--serif); font-size: 1.05rem; color: var(--navy); margin-bottom: 0.9rem; transition: color var(--transition); }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag {
+      font-size: 0.73rem; font-weight: 400;
+      background: var(--bg3); color: var(--text2);
+      border: 1px solid var(--border);
+      padding: 0.22rem 0.6rem; border-radius: 20px;
+      transition: background var(--transition), color var(--transition), border-color var(--transition);
+    }
+
+    /* ── PROJECTS ── */
+    #projects { background: var(--bg); transition: background var(--transition); }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.8rem; max-width: 1100px; }
+    .project-card {
+      border: 1px solid var(--border); border-radius: var(--radius);
+      overflow: hidden; background: var(--card);
+      transition: transform 0.25s, box-shadow 0.25s, background var(--transition), border-color var(--transition);
+    }
+    .project-card:hover { transform: translateY(-5px); box-shadow: 0 16px 50px rgba(59,130,246,0.12); border-color: rgba(59,130,246,0.3); }
+    .project-top {
+      padding: 2rem;
+      background: linear-gradient(135deg, #0F2347 0%, #1B4A8A 50%, #2563EB 100%);
+      position: relative; overflow: hidden;
+    }
+    .project-top::after {
+      content: '';
+      position: absolute; bottom: -20px; right: -20px;
+      width: 100px; height: 100px; border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .project-num { font-family: var(--serif); font-size: 3rem; color: rgba(255,255,255,0.12); line-height: 1; }
+    .project-title { font-family: var(--serif); font-size: 1.15rem; color: white; line-height: 1.3; }
+    .project-body { padding: 1.6rem; }
+    .project-desc { font-size: 0.88rem; color: var(--text2); margin-bottom: 1.2rem; line-height: 1.75; transition: color var(--transition); }
+    .project-highlights { list-style: none; margin-bottom: 1.4rem; }
+    .project-highlights li {
+      font-size: 0.84rem; color: var(--text);
+      padding: 0.28rem 0 0.28rem 1rem; position: relative;
+      transition: color var(--transition);
+    }
+    .project-highlights li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: 0.65rem; top: 0.42rem; }
+    .project-tools { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+
+    /* ── CERTIFICATIONS ── */
+    #certifications { background: var(--bg2); transition: background var(--transition); }
+    .certs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.2rem; max-width: 1100px; }
+    .cert-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.6rem;
+      display: flex; align-items: flex-start; gap: 1.2rem;
+      transition: transform 0.2s, border-color 0.2s, background var(--transition);
+    }
+    .cert-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+    .cert-icon {
+      width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+    }
+    .cert-icon.blue { background: rgba(59,130,246,0.12); }
+    .cert-icon.green { background: rgba(52,211,153,0.12); }
+    .cert-icon.orange { background: rgba(251,146,60,0.12); }
+    .cert-body h4 { font-size: 0.95rem; font-weight: 500; color: var(--text); margin-bottom: 0.3rem; transition: color var(--transition); }
+    .cert-body p { font-size: 0.82rem; color: var(--text2); line-height: 1.6; transition: color var(--transition); }
+    .cert-badge {
+      display: inline-block; margin-top: 0.6rem;
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--accent);
+      background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2);
+      padding: 0.18rem 0.55rem; border-radius: 20px;
+    }
+    .cert-badge.pursuing { color: #F59E0B; background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.2); }
+
+    /* ── RESUME ── */
+    #resume { background: var(--bg); transition: background var(--transition); }
+    .resume-inner { max-width: 640px; }
+    .resume-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 2.2rem;
+      display: flex; align-items: center; gap: 1.8rem;
+      transition: background var(--transition), border-color var(--transition);
+    }
+    .resume-icon-box {
+      width: 64px; height: 64px; border-radius: 14px; flex-shrink: 0;
+      background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2);
+      display: flex; align-items: center; justify-content: center; font-size: 1.8rem;
+    }
+    .resume-card-text h3 { font-family: var(--serif); font-size: 1.2rem; color: var(--navy); margin-bottom: 0.3rem; transition: color var(--transition); }
+    .resume-card-text p { font-size: 0.85rem; color: var(--text2); margin-bottom: 1rem; transition: color var(--transition); }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--bg2); transition: background var(--transition); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; max-width: 1100px; align-items: start; }
+    .contact-info h3 { font-family: var(--serif); font-size: 1.5rem; color: var(--navy); margin-bottom: 0.8rem; transition: color var(--transition); }
+    .contact-info p { color: var(--text2); font-size: 0.95rem; line-height: 1.8; margin-bottom: 2rem; transition: color var(--transition); }
+    .contact-links { display: flex; flex-direction: column; gap: 0.8rem; }
+    .contact-link {
+      display: flex; align-items: center; gap: 0.9rem;
+      text-decoration: none; color: var(--text);
+      font-size: 0.88rem; padding: 0.85rem 1.1rem;
+      border: 1px solid var(--border); border-radius: 10px;
+      transition: all 0.2s;
+    }
+    .contact-link:hover { border-color: var(--accent); color: var(--accent); background: rgba(59,130,246,0.04); transform: translateX(4px); }
+    .contact-link-icon { font-size: 1rem; }
+
+    /* ── CHAT ── */
+    .chat-wrap { display: flex; flex-direction: column; gap: 0.6rem; }
+    .chat-label { font-size: 0.73rem; color: var(--text2); letter-spacing: 0.08em; text-transform: uppercase; }
+    .chat-widget {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+      display: flex; flex-direction: column; height: 440px;
+      transition: background var(--transition), border-color var(--transition);
+    }
+    .chat-header {
+      padding: 0.9rem 1.2rem;
+      background: linear-gradient(135deg, #0F2347, #1B4A8A);
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .chat-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.95rem; color: white; font-weight: 500;
+      box-shadow: 0 0 12px rgba(59,130,246,0.4);
+    }
+    .chat-header-text h4 { color: white; font-size: 0.88rem; font-weight: 500; }
+    .chat-header-text p { color: rgba(255,255,255,0.55); font-size: 0.72rem; }
+    .chat-online { margin-left: auto; display: flex; align-items: center; gap: 0.4rem; font-size: 0.72rem; color: #34D399; }
+    .online-dot { width: 7px; height: 7px; border-radius: 50%; background: #34D399; box-shadow: 0 0 6px #34D399; }
+    .chat-messages { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.7rem; }
+    .chat-messages::-webkit-scrollbar { width: 3px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .msg { max-width: 86%; padding: 0.65rem 0.95rem; border-radius: 12px; font-size: 0.85rem; line-height: 1.55; }
+    .msg-ai { background: var(--bg2); color: var(--text); border: 1px solid var(--border); border-bottom-left-radius: 3px; align-self: flex-start; transition: background var(--transition), border-color var(--transition); }
+    .msg-user { background: var(--accent); color: white; border-bottom-right-radius: 3px; align-self: flex-end; }
+    .typing-dots { display: flex; gap: 4px; padding: 0.2rem 0; }
+    .typing-dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--text2); animation: bounce 1.2s infinite; }
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+    .chat-suggestions { padding: 0 1rem 0.7rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .suggestion-btn {
+      font-size: 0.73rem; font-family: var(--sans);
+      padding: 0.28rem 0.65rem; border-radius: 20px;
+      border: 1px solid var(--accent); color: var(--accent);
+      background: transparent; cursor: pointer; transition: all 0.2s;
+    }
+    .suggestion-btn:hover { background: var(--accent); color: white; }
+    .chat-input-row {
+      display: flex; gap: 0.5rem; padding: 0.8rem 1rem;
+      border-top: 1px solid var(--border); background: var(--bg2);
+      transition: background var(--transition), border-color var(--transition);
+    }
+    .chat-input {
+      flex: 1; padding: 0.6rem 0.9rem;
+      border: 1px solid var(--border); border-radius: 8px;
+      font-family: var(--sans); font-size: 0.85rem;
+      color: var(--text); background: var(--card); outline: none;
+      transition: all var(--transition);
+    }
+    .chat-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .chat-send {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: var(--accent); color: white; border: none;
+      cursor: pointer; font-size: 0.9rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s; box-shadow: 0 2px 8px var(--accent-glow);
+    }
+    .chat-send:hover { transform: scale(1.05); filter: brightness(1.15); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 1.8rem 5vw; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem; background: var(--bg);
+      transition: background var(--transition), border-color var(--transition);
+    }
+    footer p { font-size: 0.8rem; color: var(--text2); transition: color var(--transition); }
+
+    /* ── FADE ── */
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .fade-in:nth-child(2) { transition-delay: 0.1s; }
+    .fade-in:nth-child(3) { transition-delay: 0.2s; }
+
+    @media (max-width: 768px) {
+      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .nav-links { display: none; }
+      .projects-grid, .certs-grid { grid-template-columns: 1fr; }
+      .resume-card { flex-direction: column; }
+      .hero-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+      .hero-visual { display: none; }
+      .hero-name { white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="nav-logo">Vernit Tayal</a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#certifications">Certifications</a></li>
+      <li><a href="#resume">Resume</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <span class="theme-icon sun">☀️</span>
+      <span class="theme-icon moon">🌙</span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-layout fade-in">
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Open to BA &amp; DA Roles
+      </div>
+      <h1 class="hero-name">Vernit <span>Tayal</span></h1>
+      <p class="hero-role">Analyst at <strong>TCS</strong> · Supporting BT Group, UK</p>
+      <p class="hero-sub">Turning messy data and complex processes into clear business decisions — through SQL, Power BI, and sharp analytical thinking.</p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn btn-primary">✉ Get in Touch</a>
+        <a href="#projects" class="btn btn-ghost">View Projects →</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card-stack">
+        <div class="hero-img-card">
+          <div class="code-titlebar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="code-filename">credit_risk_analysis.py</span>
+          </div>
+          <div class="code-body">
+            <div class="code-line"><span class="ln">1</span><span class="cm"># Load & query customer data</span></div>
+            <div class="code-line"><span class="ln">2</span><span class="kw">import</span> <span class="op">pandas</span> <span class="kw">as</span> <span class="vr">pd</span></div>
+            <div class="code-line"><span class="ln">3</span><span class="kw">import</span> <span class="op">sqlalchemy</span> <span class="kw">as</span> <span class="vr">sa</span></div>
+            <div class="code-line"><span class="ln">4</span><span class="op"> </span></div>
+            <div class="code-line"><span class="ln">5</span><span class="vr">query</span> <span class="op">= </span><span class="st">"""</span></div>
+            <div class="code-line"><span class="ln">6</span><span class="st">&nbsp;&nbsp;SELECT customer_id, risk_score,</span></div>
+            <div class="code-line"><span class="ln">7</span><span class="st">&nbsp;&nbsp;&nbsp;&nbsp;SUM(txn_amount) AS total_spend,</span></div>
+            <div class="code-line"><span class="ln">8</span><span class="st">&nbsp;&nbsp;&nbsp;&nbsp;COUNT(*) FILTER (WHERE delinquent)</span></div>
+            <div class="code-line"><span class="ln">9</span><span class="st">&nbsp;&nbsp;FROM customers GROUP BY 1,2</span></div>
+            <div class="code-line"><span class="ln">10</span><span class="st">"""</span></div>
+            <div class="code-line"><span class="ln">11</span><span class="op"> </span></div>
+            <div class="code-line"><span class="ln">12</span><span class="vr">df</span> <span class="op">= </span><span class="fn">pd.read_sql</span><span class="op">(</span><span class="vr">query</span><span class="op">, </span><span class="vr">engine</span><span class="op">)</span></div>
+            <div class="code-line"><span class="ln">13</span><span class="vr">high_risk</span> <span class="op">= </span><span class="vr">df</span><span class="op">[</span><span class="vr">df</span><span class="op">.</span><span class="fn">risk_score</span> <span class="op">&gt; </span><span class="nm">0.75</span><span class="op">]</span></div>
+            <div class="code-line"><span class="ln">14</span><span class="cm"># 18% of users → 62% of losses</span></div>
+          </div>
+          <div class="chart-block">
+            <div class="chart-label">Monthly Delinquency Rate — BT Orders</div>
+            <div class="chart-bars">
+              <div class="bar" style="height:30%"></div>
+              <div class="bar" style="height:45%"></div>
+              <div class="bar" style="height:38%"></div>
+              <div class="bar" style="height:60%"></div>
+              <div class="bar" style="height:52%"></div>
+              <div class="bar highlight" style="height:75%"></div>
+              <div class="bar" style="height:55%"></div>
+              <div class="bar" style="height:42%"></div>
+              <div class="bar" style="height:65%"></div>
+              <div class="bar highlight" style="height:85%"></div>
+              <div class="bar" style="height:48%"></div>
+              <div class="bar" style="height:35%"></div>
+            </div>
+            <svg class="sparkline" viewBox="0 0 200 36" preserveAspectRatio="none">
+              <polyline points="0,32 20,26 40,28 60,18 80,22 100,10 120,14 140,8 160,12 180,6 200,9"
+                fill="none" stroke="#3B82F6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="0,32 20,26 40,28 60,18 80,22 100,10 120,14 140,8 160,12 180,6 200,9 200,36 0,36"
+                fill="url(#grad)" stroke="none"/>
+              <defs>
+                <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.25"/>
+                  <stop offset="100%" stop-color="#3B82F6" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </div>
+        <div class="hero-float-badge">
+          <span class="float-icon">📊</span>
+          <div>
+            <div class="float-text">Power BI · SQL · Python</div>
+            <div class="float-sub">End-to-end analytics pipeline</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll down</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">About Me</div>
+  <h2 class="section-title">Analyst by role,<br>problem-solver by nature</h2>
+  <div class="section-divider"></div>
+  <div class="about-grid">
+    <div class="about-text fade-in">
+      <p>I'm Vernit — an <strong>Analyst at Tata Consultancy Services (TCS)</strong>, deployed to support <strong>BT Group</strong>, a leading UK telecom enterprise, on order lifecycle analysis and escalation management.</p>
+      <p>My day-to-day involves root cause analysis, stakeholder reporting, process gap documentation, and cross-functional coordination — essentially making sure complex service delivery operations run smoothly and improving them when they don't.</p>
+      <p>I'm actively building projects in <strong>SQL, Power BI, and Python</strong> to transition into a BA/DA role at a product-driven organization — open to opportunities across banking, fintech, telecom, e-commerce, and any data-first company where analytical thinking drives real business decisions.</p>
+      <p>B.Tech in Computer Science Engineering, Graphic Era University — GPA 8.8/10.</p>
+    </div>
+    <div class="about-stats fade-in">
+      <div class="stat-card"><div class="stat-num">1+</div><div class="stat-label">Year at TCS</div></div>
+      <div class="stat-card"><div class="stat-num">8.8</div><div class="stat-label">B.Tech GPA</div></div>
+      <div class="stat-card"><div class="stat-num">10+</div><div class="stat-label">Stakeholders Managed</div></div>
+      <div class="stat-card"><div class="stat-num">15%</div><div class="stat-label">SLA Improvement</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">Core Skills</div>
+  <h2 class="section-title">What I bring<br>to the table</h2>
+  <div class="section-divider"></div>
+  <div class="skills-grid fade-in">
+    <div class="skill-card">
+      <div class="skill-icon">📊</div>
+      <h3>Analytics</h3>
+      <div class="skill-tags">
+        <span class="tag">SQL</span><span class="tag">Power BI</span><span class="tag">DAX</span>
+        <span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">Excel</span>
+        <span class="tag">EDA</span><span class="tag">ETL</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🗂️</div>
+      <h3>Business Analysis</h3>
+      <div class="skill-tags">
+        <span class="tag">Requirements Gathering</span><span class="tag">BRD/FRD</span>
+        <span class="tag">Gap Analysis</span><span class="tag">User Stories</span>
+        <span class="tag">Process Mapping</span><span class="tag">RCA</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🛠️</div>
+      <h3>Tools & Platforms</h3>
+      <div class="skill-tags">
+        <span class="tag">ServiceNow</span><span class="tag">Salesforce</span>
+        <span class="tag">Jira</span><span class="tag">Confluence</span>
+        <span class="tag">MS SQL Server</span><span class="tag">Agile/Scrum</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">📈</div>
+      <h3>Data Skills</h3>
+      <div class="skill-tags">
+        <span class="tag">Data Modelling</span><span class="tag">KPI Frameworks</span>
+        <span class="tag">Stakeholder Mgmt</span><span class="tag">A/B Testing</span>
+        <span class="tag">Dashboard Design</span><span class="tag">Reporting</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">Projects</div>
+  <h2 class="section-title">Work I'm<br>proud of</h2>
+  <div class="section-divider"></div>
+  <div class="projects-grid fade-in">
+    <div class="project-card">
+      <div class="project-top">
+        <div class="project-num">01</div>
+        <div class="project-title">Customer Credit Risk &amp; Delinquency Analysis</div>
+      </div>
+      <div class="project-body">
+        <p class="project-desc">End-to-end analytics simulating a fintech/banking BA use case — from raw SQL extraction to executive Power BI dashboard.</p>
+        <ul class="project-highlights">
+          <li>Analysed 100K+ records via optimised SQL queries &amp; ETL pipeline</li>
+          <li>Applied data modelling &amp; feature engineering — top 5 default predictors</li>
+          <li>Power BI dashboard flagging segments driving 62% of delinquency losses</li>
+        </ul>
+        <div class="project-tools">
+          <span class="tag">SQL</span><span class="tag">Python</span><span class="tag">Power BI</span><span class="tag">Pandas</span><span class="tag">EDA</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-top">
+        <div class="project-num">02</div>
+        <div class="project-title">Sales &amp; Revenue Performance Analytics</div>
+      </div>
+      <div class="project-body">
+        <p class="project-desc">BI reporting solution for a retail/FMCG scenario — built for stakeholder self-service and executive decision-making.</p>
+        <ul class="project-highlights">
+          <li>Integrated SQL Server with Power BI for real-time KPI monitoring</li>
+          <li>Authored 15+ DAX measures: MoM growth, YoY variance, profit margin</li>
+          <li>Built Revenue Trend, Regional Heatmap &amp; Product Mix dashboards</li>
+        </ul>
+        <div class="project-tools">
+          <span class="tag">Power BI</span><span class="tag">SQL</span><span class="tag">DAX</span><span class="tag">Excel</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-label">Certifications &amp; Achievements</div>
+  <h2 class="section-title">Recognition &amp;<br>credentials</h2>
+  <div class="section-divider"></div>
+  <div class="certs-grid fade-in">
+    <div class="cert-card">
+      <div class="cert-icon blue">🏅</div>
+      <div class="cert-body">
+        <h4>Tata Group Data Analytics Virtual Job Simulation</h4>
+        <p>Performed AI-powered EDA, predictive modelling, and designed a delinquency risk framework in a simulated enterprise environment.</p>
+        <span class="cert-badge">Forage · Oct 2024</span>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon green">🏆</div>
+      <div class="cert-body">
+        <h4>Cognizant Digital Nurture Ideathon 2023</h4>
+        <p>Presented a data-driven business solution — recognised among top teams for analytical problem-solving approach.</p>
+        <span class="cert-badge">Cognizant · 2023</span>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon blue">⭐</div>
+      <div class="cert-body">
+        <h4>TCS Internal Recognition</h4>
+        <p>Recognised at TCS for SLA dashboard automation and improving cross-team visibility through structured analytical reporting.</p>
+        <span class="cert-badge">TCS · 2024</span>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon orange">📘</div>
+      <div class="cert-body">
+        <h4>Microsoft PL-300 — Power BI Data Analyst Associate</h4>
+        <p>Currently pursuing the Microsoft certified Power BI Data Analyst Associate certification to formalise BI expertise.</p>
+        <span class="cert-badge pursuing">In Progress</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESUME -->
+<section id="resume">
+  <div class="section-label">Resume</div>
+  <h2 class="section-title">Download my<br>resume</h2>
+  <div class="section-divider"></div>
+  <div class="resume-inner fade-in">
+    <div class="resume-card">
+      <div class="resume-icon-box">📄</div>
+      <div class="resume-card-text">
+        <h3>Vernit Tayal — BA / DA Resume</h3>
+        <p>ATS Optimised · 1 Page · Updated 2025</p>
+        <a href="Vernit_Tayal_Resume_ATS.docx" download class="btn btn-primary">⬇ Download Resume</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Contact</div>
+  <h2 class="section-title">Let's connect</h2>
+  <div class="section-divider"></div>
+  <div class="contact-grid">
+    <div class="contact-info fade-in">
+      <h3>Open to new opportunities</h3>
+      <p>I'm actively looking for Business Analyst and Data Analyst roles at product-driven companies. If you think I'd be a good fit — or just want to talk data — reach out anytime.</p>
+      <div class="contact-links">
+        <a href="mailto:tayal.vernit.0802@gmail.com" class="contact-link">
+          <span class="contact-link-icon">✉️</span> tayal.vernit.0802@gmail.com
+        </a>
+        <a href="https://linkedin.com/in/vernit-tayal-o8o2" target="_blank" class="contact-link">
+          <span class="contact-link-icon">💼</span> linkedin.com/in/vernit-tayal-o8o2
+        </a>
+        <a href="tel:+919528381162" class="contact-link">
+          <span class="contact-link-icon">📞</span> +91-9528381162
+        </a>
+      </div>
+    </div>
+    <div class="fade-in">
+      <div class="chat-wrap">
+        <p class="chat-label">✨ Ask my AI assistant about me</p>
+        <div class="chat-widget">
+          <div class="chat-header">
+            <div class="chat-avatar">V</div>
+            <div class="chat-header-text">
+              <h4>Vernit's AI Assistant</h4>
+              <p>Powered by Claude · Ask anything</p>
+            </div>
+            <div class="chat-online"><div class="online-dot"></div> Online</div>
+          </div>
+          <div class="chat-messages" id="chatMessages">
+            <div class="msg msg-ai">Hi there! 👋 I'm Vernit's AI assistant. Ask me about his skills, experience, projects, or whether he'd be a great fit for your team!</div>
+          </div>
+          <div class="chat-suggestions" id="chatSuggestions">
+            <button class="suggestion-btn" onclick="sendSuggestion(this)">What are his skills?</button>
+            <button class="suggestion-btn" onclick="sendSuggestion(this)">His experience?</button>
+            <button class="suggestion-btn" onclick="sendSuggestion(this)">Is he open to work?</button>
+            <button class="suggestion-btn" onclick="sendSuggestion(this)">Tell me about his projects</button>
+          </div>
+          <div class="chat-input-row">
+            <input class="chat-input" id="chatInput" type="text" placeholder="Ask about Vernit..." onkeydown="if(event.key==='Enter') sendMessage()"/>
+            <button class="chat-send" onclick="sendMessage()">➤</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Vernit Tayal</p>
+  <p>Gurugram, India · Open to Relocation</p>
+</footer>
+
+<script>
+  // THEME TOGGLE
+  const toggle = document.getElementById('themeToggle');
+  const html = document.documentElement;
+  const saved = localStorage.getItem('theme') || 'light';
+  html.setAttribute('data-theme', saved);
+  toggle.addEventListener('click', () => {
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+
+  // FADE IN
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // ACTIVE NAV
+  const sections = document.querySelectorAll('section[id]');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+
+  // AI CHAT
+  const RESUME_CONTEXT = `You are an AI assistant on Vernit Tayal's personal portfolio website. Be professional, warm, and concise.
+
+About Vernit:
+- Name: Vernit Tayal
+- Current Role: Analyst at Tata Consultancy Services (TCS), Gurugram, India
+- Client: BT Group, UK (leading telecom enterprise)
+- Duration: September 2024 – Present
+- Education: B.Tech Computer Science Engineering, Graphic Era University, Dehradun. GPA: 8.8/10
+- Target Roles: Business Analyst, Data Analyst at product companies like Amex, NAB, Signify
+
+Skills: SQL, Power BI (DAX, Power Query), Python (Pandas), Excel (VLOOKUP, Pivot Tables), EDA, ETL, Data Modelling, Requirements Gathering, BRD/FRD, Gap Analysis, User Stories, Process Mapping, RCA, KPI Frameworks, Stakeholder Management, ServiceNow, Salesforce, Jira, Confluence, Agile/Scrum, A/B Testing
+
+Work at TCS:
+- End-to-end order lifecycle analysis for BT Group improving SLA adherence by 15%
+- Root Cause Analysis (RCA) reducing repeat escalations by 12%
+- KPI dashboards and stakeholder reports for 10+ stakeholders
+- Cross-functional requirements gathering and stakeholder management
+- As-Is process flows, SOPs, BRD artefacts and gap analysis
+
+Projects:
+1. Customer Credit Risk & Delinquency Analysis (SQL, Python, Power BI) — 100K+ records, ETL pipeline, Power BI dashboard flagging 62% delinquency losses
+2. Sales & Revenue Performance Analytics (Power BI, SQL, DAX) — 15+ DAX measures, executive dashboards
+
+Certifications: Tata Group Data Analytics Virtual Job Simulation (Forage Oct 2024), Cognizant Ideathon 2023 top team, TCS internal recognition for SLA dashboard automation, pursuing Microsoft PL-300 Power BI certification
+
+Contact: tayal.vernit.0802@gmail.com | +91-9528381162 | linkedin.com/in/vernit-tayal-o8o2
+
+He is actively open to BA/DA opportunities. Keep answers under 3-4 sentences unless detail is needed.`;
+
+  const messagesEl = document.getElementById('chatMessages');
+  const inputEl = document.getElementById('chatInput');
+  let history = [];
+
+  function scrollChat() { messagesEl.scrollTop = messagesEl.scrollHeight; }
+
+  function addMsg(text, role) {
+    const d = document.createElement('div');
+    d.className = 'msg ' + (role === 'user' ? 'msg-user' : 'msg-ai');
+    d.textContent = text;
+    messagesEl.appendChild(d);
+    scrollChat();
+  }
+
+  function showTyping() {
+    const d = document.createElement('div');
+    d.className = 'msg msg-ai'; d.id = 'typing';
+    d.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+    messagesEl.appendChild(d); scrollChat();
+  }
+  function hideTyping() { const t = document.getElementById('typing'); if(t) t.remove(); }
+
+  async function sendSuggestion(btn) {
+    document.getElementById('chatSuggestions').style.display = 'none';
+    await handleSend(btn.textContent);
+  }
+
+  async function sendMessage() {
+    const text = inputEl.value.trim();
+    if (!text) return;
+    inputEl.value = '';
+    document.getElementById('chatSuggestions').style.display = 'none';
+    await handleSend(text);
+  }
+
+  async function handleSend(text) {
+    addMsg(text, 'user');
+    history.push({ role: 'user', content: text });
+    showTyping();
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          system: RESUME_CONTEXT,
+          messages: history
+        })
+      });
+      const data = await res.json();
+      hideTyping();
+      const reply = data.content?.map(b => b.text||'').join('') || "Sorry, couldn't get a response right now.";
+      addMsg(reply, 'ai');
+      history.push({ role: 'assistant', content: reply });
+    } catch {
+      hideTyping();
+      addMsg("Something went wrong. Please try again shortly.", 'ai');
+    }
+  }
+</script>
+</body>
+</html>
